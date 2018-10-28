@@ -1,17 +1,32 @@
-import React,{ useState } from 'react';
+import React, { useReducer } from 'react'
 
-function App() {
-  // Declare a new state variable, which we'll call "count"
-  const [count, setCount] = useState(0);
+const initialState = { count: 0 }
 
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-    </div>
-  );
+function reducer (state, action) {
+  switch (action.type) {
+    case 'reset':
+      return initialState
+    case 'increment':
+      return { count: state.count + 1 }
+    case 'decrement':
+      return { count: state.count - 1 }
+    default:
+      return state
+  }
 }
 
-export default App;
+
+const App = ({ initialCount }) => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+return(
+  <div>
+    Count: {state.count}
+    <button onClick={() => dispatch({ type: 'reset' })}>
+      Reset
+    </button>
+    <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+    <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+  </div>)
+}
+
+export default App
